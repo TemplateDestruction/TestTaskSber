@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="TabsStyle">
+        <item name="android:background">@color/white</item>
+        <item name="tabTextColor">@color/blue</item>
+        <item name="tabSelectedTextColor">@color/blue</item>
+        <item name="tabIndicatorColor">@color/blue</item>
+    </style>
+
+    <style name="LoadingBar" parent="Widget.AppCompat.ProgressBar">
+        <item name="android:indeterminate">true</item>
+    </style>
+
+    <style name="AppTheme.Base" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorPrimaryDark">@color/primary_dark</item>
+        <item name="colorAccent">@color/accent</item>
+    </style>
+
+    <style name="AppTheme" parent="AppTheme.Base"/>
+</resources>
