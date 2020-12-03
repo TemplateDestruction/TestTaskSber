@@ -1,6 +1,7 @@
 package com.test.sber.presentation.view.main
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,6 +13,7 @@ import com.test.sber.presentation.view.adapters.BaseAdapter
 import com.test.sber.presentation.view.adapters.DrugsPagerAdapter
 import com.test.sber.presentation.view.base.fragment.BaseVmFragment
 import com.test.sber.presentation.vm.main.MainFragmentVm
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.error_layout.*
 import kotlinx.android.synthetic.main.main_frag.*
 
@@ -19,6 +21,7 @@ import kotlinx.android.synthetic.main.main_frag.*
 class MainFragment : BaseVmFragment<MainFragmentVm>() {
 
     override fun getVmClass() = MainFragmentVm::class.java
+    private lateinit var a: MutableList<Entity.Drug>
     private lateinit var drugsPagerAdapter: DrugsPagerAdapter
 
     override fun onCreateView(
@@ -32,7 +35,11 @@ class MainFragment : BaseVmFragment<MainFragmentVm>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupTabs()
-        createBinds()
+
+    }
+
+    override fun onResume() {
+        super.onResume()
         vm.init()
     }
 
@@ -50,22 +57,27 @@ class MainFragment : BaseVmFragment<MainFragmentVm>() {
     override fun createBinds() {
         rxBinds.addAll(
             vm.drugListState.subscribe {
+                shimmer_view_container.stopShimmer()
+                shimmer_view_container.visibility = View.GONE
                 drugsPagerAdapter.updateDrugs(it)
             },
             vm.loadingState.subscribe {
                 if (it) {
-                    error_layout_main_frag.visibility = View.GONE
-                    comp_loading_view.visibility = View.VISIBLE
+                    shimmer_view_container.startShimmer()
+                    shimmer_view_container.visibility = View.VISIBLE
                     drugsPagerAdapter.updateDrugs(Pair(mutableListOf(), mutableListOf()))
                 } else {
-                    comp_loading_view.visibility = View.GONE
+
                 }
             },
             vm.internetErrorState.subscribe {
+                shimmer_view_container.stopShimmer()
+                shimmer_view_container.visibility = View.GONE
                 error_layout_main_frag.visibility = View.VISIBLE
             },
             btn_repeat_error_layout.clicks().subscribe {
-                vm.init()
+                error_layout_main_frag.visibility = View.GONE
+                vm.loadContent()
             }
         )
     }
