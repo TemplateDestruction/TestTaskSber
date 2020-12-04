@@ -34,10 +34,6 @@ class DrugFragment(val drug: Entity.Drug) : BaseVmFragment<DrugFragmentVm>() {
         vm.init()
     }
 
-
-    private fun addBinds() {
-    }
-
 }
 
 

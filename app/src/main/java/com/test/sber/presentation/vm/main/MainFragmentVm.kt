@@ -33,10 +33,10 @@ class MainFragmentVm : BaseVm() {
     @Inject
     lateinit var iDrugListUseCase: IGetDrugListUseCase
     fun init() {
-        DaggerAppComponent
-            .builder()
-            .build()
-            .injectViewModel(this)
+//        DaggerAppComponent
+//            .builder()
+//            .build()
+//            .injectViewModel(this)
         loadContent()
     }
 

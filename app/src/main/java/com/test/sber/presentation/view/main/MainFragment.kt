@@ -21,7 +21,6 @@ import kotlinx.android.synthetic.main.main_frag.*
 class MainFragment : BaseVmFragment<MainFragmentVm>() {
 
     override fun getVmClass() = MainFragmentVm::class.java
-    private lateinit var a: MutableList<Entity.Drug>
     private lateinit var drugsPagerAdapter: DrugsPagerAdapter
 
     override fun onCreateView(
