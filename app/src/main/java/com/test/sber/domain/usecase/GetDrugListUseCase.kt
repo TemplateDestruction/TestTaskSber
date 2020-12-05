@@ -6,7 +6,7 @@ import com.test.sber.domain.repository.IDataRepository
 import io.reactivex.Single
 import javax.inject.Inject
 
-class GetDrugListUseCase @Inject constructor(private val repository: IDataRepository) : IGetDrugListUseCase {
+class GetDrugListUseCase(private val repository: IDataRepository) : IGetDrugListUseCase {
     override fun getDrugs(): Single<Pair<List<Entity.Drug>, List<Entity.Drug>>>
             = repository.getDrugList()
 }

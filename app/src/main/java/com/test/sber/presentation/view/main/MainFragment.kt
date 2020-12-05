@@ -1,27 +1,32 @@
 package com.test.sber.presentation.view.main
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.ViewModelProvider
 import com.jakewharton.rxbinding2.view.clicks
 import com.test.sber.R
-import com.test.sber.domain.entity.Entity
-import com.test.sber.domain.model.Drug
-import com.test.sber.presentation.view.adapters.BaseAdapter
+import com.test.sber.di.main.DaggerMainComponent
+import com.test.sber.di.main.MainModule
+import com.test.sber.presentation.CustomApp
 import com.test.sber.presentation.view.adapters.DrugsPagerAdapter
 import com.test.sber.presentation.view.base.fragment.BaseVmFragment
 import com.test.sber.presentation.vm.main.MainFragmentVm
-import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.error_layout.*
 import kotlinx.android.synthetic.main.main_frag.*
+import javax.inject.Inject
 
 
 class MainFragment : BaseVmFragment<MainFragmentVm>() {
 
     override fun getVmClass() = MainFragmentVm::class.java
-    private lateinit var drugsPagerAdapter: DrugsPagerAdapter
+
+    @Inject
+    lateinit var drugsPagerAdapter: DrugsPagerAdapter
+
+    @Inject
+    override lateinit var vmFactory: ViewModelProvider.Factory
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -31,24 +36,28 @@ class MainFragment : BaseVmFragment<MainFragmentVm>() {
         return inflater.inflate(R.layout.main_frag, container, false)
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        DaggerMainComponent
+            .builder()
+            .appComponent(CustomApp.appComponent)
+            .mainModule(MainModule(requireContext()))
+            .build()
+            .injectMainFragment(this)
+
+        super.onCreate(savedInstanceState)
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupTabs()
 
     }
 
-    override fun onResume() {
-        super.onResume()
+    override fun init() {
         vm.init()
     }
 
-    override fun onPause() {
-        super.onPause()
-        rxBinds.clear()
-    }
-
     private fun setupTabs() {
-        drugsPagerAdapter = DrugsPagerAdapter(requireContext(), drugClickListener)
         drugs_viewpager.adapter = drugsPagerAdapter
         tabs_drug_frag.setupWithViewPager(drugs_viewpager)
     }
@@ -70,8 +79,6 @@ class MainFragment : BaseVmFragment<MainFragmentVm>() {
                 }
             },
             vm.internetErrorState.subscribe {
-                shimmer_view_container.stopShimmer()
-                shimmer_view_container.visibility = View.GONE
                 error_layout_main_frag.visibility = View.VISIBLE
             },
             btn_repeat_error_layout.clicks().subscribe {
@@ -79,17 +86,6 @@ class MainFragment : BaseVmFragment<MainFragmentVm>() {
                 vm.loadContent()
             }
         )
-    }
-
-    private val drugClickListener = object : BaseAdapter.OnItemClickListener<Entity.Drug> {
-        override fun onItemClick(item: Entity.Drug, view: View) {
-            activity!!
-                .supportFragmentManager
-                .beginTransaction()
-                .replace(R.id.container, DrugFragment(item))
-                .addToBackStack(null)
-                .commit()
-        }
     }
 }
 

@@ -16,7 +16,7 @@ abstract class BaseVmActivity<VM : BaseVm>(
     /**
      * Переопределить если понадобится создать фабрику VM
      */
-    protected open val vmFactory: ViewModelProvider.Factory? = null
+    open val vmFactory: ViewModelProvider.Factory? = null
 
     /**
      * ViewModel этой Activity

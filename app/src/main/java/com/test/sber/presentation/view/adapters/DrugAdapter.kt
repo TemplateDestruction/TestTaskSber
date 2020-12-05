@@ -6,12 +6,15 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
 import com.test.sber.R
+import com.test.sber.di.main.MainScope
 import com.test.sber.domain.entity.Entity
-import com.test.sber.domain.model.Drug
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.drug_layout.*
+import javax.inject.Inject
 
-class DrugAdapter :
+
+
+class DrugAdapter @Inject constructor() :
     BaseAdapter<DrugAdapter.DrugViewHolder, Entity.Drug>(mutableListOf()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DrugViewHolder {

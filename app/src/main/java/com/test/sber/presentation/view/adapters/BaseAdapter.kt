@@ -2,21 +2,26 @@ package com.test.sber.presentation.view.adapters
 
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
+import com.test.sber.domain.entity.Entity
 import com.test.sber.presentation.view.custom.EmptyRecyclerView
+import io.reactivex.Observable
+import io.reactivex.subjects.PublishSubject
 
 abstract class BaseAdapter<VH : RecyclerView.ViewHolder, T>(items: List<T>) :
     RecyclerView.Adapter<VH>() {
+
+    private val onDrugItemClickSubject = PublishSubject.create<T>()
+    val drugItemClickEvent: Observable<T> = onDrugItemClickSubject
+
 
     private val mItems = ArrayList<T>()
 
     private var mOnItemClickListener: OnItemClickListener<T>? = null
 
     private val mInternalListener = { view : View ->
-        if (mOnItemClickListener != null) {
             val position = view.tag as Int
             val item = mItems[position]
-            mOnItemClickListener!!.onItemClick(item, view)
-        }
+            onDrugItemClickSubject.onNext(item)
     }
 
 

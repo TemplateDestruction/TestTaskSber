@@ -1,6 +1,8 @@
 package com.test.sber.presentation.view.adapters
 
+import android.annotation.SuppressLint
 import android.content.Context
+import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -8,25 +10,27 @@ import android.view.ViewGroup
 import androidx.fragment.app.FragmentActivity
 import androidx.viewpager.widget.PagerAdapter
 import com.test.sber.R
+import com.test.sber.di.main.MainScope
 import com.test.sber.domain.entity.Entity
-import com.test.sber.domain.model.Drug
 
-import com.test.sber.presentation.view.adapters.BaseAdapter.OnItemClickListener
 import com.test.sber.presentation.view.main.DrugFragment
 import kotlinx.android.synthetic.main.rv_single.view.*
+import javax.inject.Inject
 
-class DrugsPagerAdapter(
-    private val mContext: Context,
-    private val listener: OnItemClickListener<Entity.Drug>
+@SuppressLint("CheckResult")
+
+class DrugsPagerAdapter (
+    val mContext : Context,
+    val adultDrugAdapter : DrugAdapter,
+    val childDrugAdapter: DrugAdapter
 ) : PagerAdapter() {
 
     private val PAGES_COUNT = 2
-    private val adultDrugAdapter : DrugAdapter = DrugAdapter()
-    private val childDrugAdapter : DrugAdapter = DrugAdapter()
 
     init {
-        adultDrugAdapter.setOnItemClickListener(listener)
-        childDrugAdapter.setOnItemClickListener(listener)
+
+        adultDrugAdapter.drugItemClickEvent.subscribe { onDrugClick(it) }
+        childDrugAdapter.drugItemClickEvent.subscribe { onDrugClick(it) }
     }
 
     override fun isViewFromObject(view: View, `object`: Any): Boolean {
@@ -61,4 +65,20 @@ class DrugsPagerAdapter(
         adultDrugAdapter.changeDataSet(it.first)
         childDrugAdapter.changeDataSet(it.second)
     }
+
+    private fun onDrugClick(item: Entity.Drug) {
+        val drugFragment = DrugFragment()
+        val bundle = Bundle()
+        bundle.putParcelable("drug", item)
+        drugFragment.arguments = bundle
+        (mContext as FragmentActivity)
+            .supportFragmentManager
+            .beginTransaction()
+            .replace(R.id.container, drugFragment)
+            .addToBackStack(null)
+            .commit()
+    }
+
+
+
 }
