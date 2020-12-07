@@ -44,30 +44,19 @@
             android:layout_height="wrap_content"
             android:clickable="false"
             android:orientation="vertical">
-            <include layout="@layout/drug_layout" />
-            <include layout="@layout/drug_layout" />
-            <include layout="@layout/drug_layout" />
-            <include layout="@layout/drug_layout" />
-            <include layout="@layout/drug_layout" />
-            <include layout="@layout/drug_layout" />
-            <include layout="@layout/drug_layout" />
-            <include layout="@layout/drug_layout" />
-            <include layout="@layout/drug_layout" />
-            <include layout="@layout/drug_layout" />
+            <include layout="@layout/drug_layout_load" />
+            <include layout="@layout/drug_layout_load" />
+            <include layout="@layout/drug_layout_load" />
+            <include layout="@layout/drug_layout_load" />
+            <include layout="@layout/drug_layout_load" />
+            <include layout="@layout/drug_layout_load" />
+            <include layout="@layout/drug_layout_load" />
+            <include layout="@layout/drug_layout_load" />
+            <include layout="@layout/drug_layout_load" />
+            <include layout="@layout/drug_layout_load" />
 
         </LinearLayout>
     </com.facebook.shimmer.ShimmerFrameLayout>
-
-
-    <include
-        android:id="@+id/comp_loading_view"
-        layout="@layout/comp_loading"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
     <include
         android:id="@+id/error_layout_main_frag"

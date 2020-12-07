@@ -6,6 +6,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import com.test.sber.R
 import com.test.sber.presentation.view.base.fragment.OnBackPressedListener
+import dagger.android.DaggerActivity
+import dagger.android.support.DaggerAppCompatActivity
 import io.reactivex.disposables.CompositeDisposable
 
 /**
@@ -13,7 +15,9 @@ import io.reactivex.disposables.CompositeDisposable
  */
 abstract class BaseActivity(
     @LayoutRes layoutRes: Int? = null
-) : AppCompatActivity(layoutRes ?: R.layout.empty_layout) {
+) : DaggerAppCompatActivity(
+        layoutRes ?: R.layout.empty_layout
+) {
 
     protected val rxBinds = CompositeDisposable()
 

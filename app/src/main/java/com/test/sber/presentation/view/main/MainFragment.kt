@@ -1,15 +1,11 @@
 package com.test.sber.presentation.view.main
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
+import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import com.jakewharton.rxbinding2.view.clicks
 import com.test.sber.R
-import com.test.sber.di.main.DaggerMainComponent
-import com.test.sber.di.main.MainModule
-import com.test.sber.presentation.CustomApp
 import com.test.sber.presentation.view.adapters.DrugsPagerAdapter
 import com.test.sber.presentation.view.base.fragment.BaseVmFragment
 import com.test.sber.presentation.vm.main.MainFragmentVm
@@ -18,7 +14,7 @@ import kotlinx.android.synthetic.main.main_frag.*
 import javax.inject.Inject
 
 
-class MainFragment : BaseVmFragment<MainFragmentVm>() {
+class MainFragment : BaseVmFragment<MainFragmentVm>(R.layout.main_frag) {
 
     override fun getVmClass() = MainFragmentVm::class.java
 
@@ -27,25 +23,6 @@ class MainFragment : BaseVmFragment<MainFragmentVm>() {
 
     @Inject
     override lateinit var vmFactory: ViewModelProvider.Factory
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        return inflater.inflate(R.layout.main_frag, container, false)
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        DaggerMainComponent
-            .builder()
-            .appComponent(CustomApp.appComponent)
-            .mainModule(MainModule(requireContext()))
-            .build()
-            .injectMainFragment(this)
-
-        super.onCreate(savedInstanceState)
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -65,8 +42,6 @@ class MainFragment : BaseVmFragment<MainFragmentVm>() {
     override fun createBinds() {
         rxBinds.addAll(
             vm.drugListState.subscribe {
-                shimmer_view_container.stopShimmer()
-                shimmer_view_container.visibility = View.GONE
                 drugsPagerAdapter.updateDrugs(it)
             },
             vm.loadingState.subscribe {
@@ -75,15 +50,23 @@ class MainFragment : BaseVmFragment<MainFragmentVm>() {
                     shimmer_view_container.visibility = View.VISIBLE
                     drugsPagerAdapter.updateDrugs(Pair(mutableListOf(), mutableListOf()))
                 } else {
-
+                    shimmer_view_container.stopShimmer()
+                    shimmer_view_container.visibility = View.GONE
                 }
             },
             vm.internetErrorState.subscribe {
                 error_layout_main_frag.visibility = View.VISIBLE
             },
             btn_repeat_error_layout.clicks().subscribe {
-                error_layout_main_frag.visibility = View.GONE
-                vm.loadContent()
+                vm.checkConnection()
+                    .subscribe({
+                        if (it) {
+                            error_layout_main_frag.visibility = View.GONE
+                            vm.loadContent()
+                        } else {
+                            Toast.makeText(requireContext(), "Check Internet connection", Toast.LENGTH_SHORT).show()
+                        }
+                    }, {})
             }
         )
     }

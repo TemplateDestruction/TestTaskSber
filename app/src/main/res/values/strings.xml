@@ -1,9 +1,8 @@
 <resources>
-    <string name="app_name">My Application</string>
+    <string name="app_name">Test Task</string>
     <string name="adults">Взрослые</string>
     <string name="children">Детские</string>
     <string name="error_data">Не удалось загрузить данные</string>
     <string name="repeat">Повторить</string>
     <string name="search">Поиск</string>
-    <string name="medical_product">Medical Product</string>
 </resources>

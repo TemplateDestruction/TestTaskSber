@@ -1,21 +1,28 @@
 package com.test.sber.di.main
 
-import android.content.Context
-import androidx.viewpager.widget.PagerAdapter
-import com.test.sber.di.main.MainScope
-import com.test.sber.presentation.view.adapters.DrugAdapter
-import com.test.sber.presentation.view.adapters.DrugsPagerAdapter
-import dagger.Binds
+import com.test.sber.di.main.scopes.ActivityScope
+import com.test.sber.di.main.scopes.DrugFragmentScope
+import com.test.sber.di.main.scopes.MainFragmentScope
+import com.test.sber.presentation.view.main.DrugFragment
+import com.test.sber.presentation.view.main.MainActivity
+import com.test.sber.presentation.view.main.MainFragment
 import dagger.Module
-import dagger.Provides
+import dagger.android.ContributesAndroidInjector
+
 
 @Module
-class MainModule(private val mContext: Context) {
+abstract class MainModule {
 
-    @Provides
-    @MainScope
-    fun provideDrugsPagerAdapter(adultAdapter: DrugAdapter, childAdapter : DrugAdapter)
-            = DrugsPagerAdapter(mContext, adultAdapter, childAdapter)
+    @ActivityScope
+    @ContributesAndroidInjector
+    abstract fun mainActivity(): MainActivity
 
+    @MainFragmentScope
+    @ContributesAndroidInjector(modules = [FragmentModule::class])
+    abstract fun mainFragment(): MainFragment
+
+    @DrugFragmentScope
+    @ContributesAndroidInjector
+    abstract fun drugFragment(): DrugFragment
 
 }

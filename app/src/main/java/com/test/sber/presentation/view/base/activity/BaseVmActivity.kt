@@ -36,7 +36,7 @@ abstract class BaseVmActivity<VM : BaseVm>(
     protected abstract fun getVmClass(): Class<VM>
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        vm.createVmBinds()
         super.onCreate(savedInstanceState)
+        vm.createVmBinds()
     }
 }

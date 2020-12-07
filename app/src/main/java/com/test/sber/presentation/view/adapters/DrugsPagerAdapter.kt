@@ -2,27 +2,30 @@ package com.test.sber.presentation.view.adapters
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.FragmentActivity
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import androidx.viewpager.widget.PagerAdapter
 import com.test.sber.R
-import com.test.sber.di.main.MainScope
 import com.test.sber.domain.entity.Entity
 
 import com.test.sber.presentation.view.main.DrugFragment
+import com.test.sber.presentation.view.main.MainActivity
+import com.test.sber.presentation.view.main.MainFragment
 import kotlinx.android.synthetic.main.rv_single.view.*
 import javax.inject.Inject
 
 @SuppressLint("CheckResult")
 
-class DrugsPagerAdapter (
-    val mContext : Context,
-    val adultDrugAdapter : DrugAdapter,
-    val childDrugAdapter: DrugAdapter
+class DrugsPagerAdapter @Inject constructor (
+    private val mContext : Context,
+    private val adultDrugAdapter : DrugAdapter,
+    private val childDrugAdapter: DrugAdapter
 ) : PagerAdapter() {
 
     private val PAGES_COUNT = 2
@@ -67,16 +70,9 @@ class DrugsPagerAdapter (
     }
 
     private fun onDrugClick(item: Entity.Drug) {
-        val drugFragment = DrugFragment()
         val bundle = Bundle()
         bundle.putParcelable("drug", item)
-        drugFragment.arguments = bundle
-        (mContext as FragmentActivity)
-            .supportFragmentManager
-            .beginTransaction()
-            .replace(R.id.container, drugFragment)
-            .addToBackStack(null)
-            .commit()
+        (mContext as MainActivity).navController.navigate(R.id.drugFragment, bundle)
     }
 
 

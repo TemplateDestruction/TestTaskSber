@@ -1,17 +1,20 @@
 package com.test.sber.data.repository
 
-import com.test.sber.data.api.ApiFactory
-import com.test.sber.data.datasource.drugs.DrugDataSource
+import android.content.Context
 import com.test.sber.data.datasource.drugs.IDrugDataSource
-import com.test.sber.data.mapper.toEntity
 import com.test.sber.domain.entity.Entity
 import com.test.sber.domain.repository.IDataRepository
 import io.reactivex.Single
 
 
+class DataRepository(
+    private val drugDataSource: IDrugDataSource,
+    private val appContext: Context
+) : IDataRepository {
 
-class DataRepository(private val drugDataSource : IDrugDataSource) : IDataRepository {
+    override fun getDrugList(): Single<Pair<List<Entity.Drug>, List<Entity.Drug>>>
+            = drugDataSource.getRemoteData()
 
-    override fun getDrugList(): Single<Pair<List<Entity.Drug>, List<Entity.Drug>>> =
-        drugDataSource.getRemoteData()
+    override fun checkConnection(): Single<Boolean>
+            = InternetConnectionUtil.isInternetOn(appContext)
 }

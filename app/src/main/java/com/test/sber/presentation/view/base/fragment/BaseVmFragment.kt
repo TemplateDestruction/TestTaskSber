@@ -1,6 +1,7 @@
 package com.test.sber.presentation.view.base.fragment
 
 import android.os.Bundle
+import androidx.annotation.LayoutRes
 import androidx.lifecycle.ViewModelProvider
 import com.test.sber.presentation.vm.base.BaseVm
 
@@ -9,7 +10,9 @@ import com.test.sber.presentation.vm.base.BaseVm
  *
  * EN: Base Fragment with [BaseVm] class
  */
-abstract class BaseVmFragment<VM : BaseVm> : BaseFragment() {
+abstract class BaseVmFragment<VM : BaseVm> : BaseFragment {
+    constructor() : super()
+    constructor(@LayoutRes layoutRes : Int) : super(layoutRes)
 
     /**
      * Переопределить если понадобится создать фабрику VM

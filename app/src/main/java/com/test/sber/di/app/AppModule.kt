@@ -1,16 +1,15 @@
 package com.test.sber.di.app
 
 import android.content.Context
+import com.test.sber.presentation.CustomApp
+import dagger.Binds
 import dagger.Module
-import dagger.Provides
 import javax.inject.Singleton
 
 @Module
-class AppModule(private val appContext: Context) {
+abstract class AppModule {
 
-    @Provides
+    @Binds
     @Singleton
-    fun provideContext() : Context {
-        return appContext
-    }
+    abstract fun provideContext(customApp: CustomApp) : Context
 }

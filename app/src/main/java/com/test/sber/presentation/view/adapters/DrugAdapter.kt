@@ -6,7 +6,6 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
 import com.test.sber.R
-import com.test.sber.di.main.MainScope
 import com.test.sber.domain.entity.Entity
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.drug_layout.*

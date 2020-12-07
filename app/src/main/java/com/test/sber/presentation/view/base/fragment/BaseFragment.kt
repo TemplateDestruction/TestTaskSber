@@ -4,17 +4,26 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.LayoutRes
 import androidx.fragment.app.Fragment
+import androidx.navigation.NavController
+import androidx.navigation.fragment.findNavController
+import dagger.android.support.DaggerFragment
 import io.reactivex.disposables.CompositeDisposable
 
 /**
  * Базовый класс включающий в себя общую для всех Fragment логику в проекте.
  */
-abstract class BaseFragment : Fragment() {
+abstract class BaseFragment : DaggerFragment {
+    constructor() : super()
+    constructor(@LayoutRes layoutRes: Int) : super(layoutRes)
 
     protected var firstStart: Boolean = true
 
     protected val rxBinds = CompositeDisposable()
+
+    protected lateinit var navController: NavController
+
 
     /**
      * Метод вызывается один раз при старте фрагмента
@@ -24,6 +33,7 @@ abstract class BaseFragment : Fragment() {
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        navController = findNavController()
         return super.onCreateView(inflater, container, savedInstanceState)
 
     }

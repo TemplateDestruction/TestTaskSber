@@ -1,4 +1,4 @@
-package com.test.sber.di.app.vm
+package com.test.sber.di.vm
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -15,20 +15,21 @@ import javax.inject.Singleton
 abstract class ViewModelModule {
 
     @Binds
+    @Singleton
     abstract fun bindViewModelFactory(factory: ViewModelFactory): ViewModelProvider.Factory
 
     @Binds
     @IntoMap
     @ViewModelKey(MainFragmentVm::class)
-    abstract fun provideMainFragmentVm(viewModel: MainFragmentVm): ViewModel
+    abstract fun bindMainFragmentVm(viewModel: MainFragmentVm): ViewModel
 
     @Binds
     @IntoMap
     @ViewModelKey(DrugFragmentVm::class)
-    abstract fun provideDrugFragmentVm(viewModel: DrugFragmentVm): ViewModel
+    abstract fun bindDrugFragmentVm(viewModel: DrugFragmentVm): ViewModel
 
     @Binds
     @IntoMap
     @ViewModelKey(MainActivityVm::class)
-    abstract fun provideMainActivityVm(viewModel: MainActivityVm): ViewModel
+    abstract fun bindMainActivityVm(viewModel: MainActivityVm): ViewModel
 }

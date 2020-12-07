@@ -6,4 +6,6 @@ import io.reactivex.Single
 
 interface IDataRepository {
     fun getDrugList(): Single<Pair<List<Entity.Drug>, List<Entity.Drug>>>
+
+    fun checkConnection(): Single<Boolean>
 }

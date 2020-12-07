@@ -1,18 +1,22 @@
 package com.test.sber.presentation.vm.main
 
+import android.util.Log
 import com.jakewharton.rxrelay2.BehaviorRelay
 import com.jakewharton.rxrelay2.PublishRelay
 import com.test.sber.data.extension.applyScheduler
-import com.test.sber.di.main.MainScope
 import com.test.sber.domain.entity.Entity
-import com.test.sber.domain.usecase.IGetDrugListUseCase
-import com.test.sber.presentation.CustomApp
+import com.test.sber.domain.usecase.interfaces.ICheckConnectionUseCase
+import com.test.sber.domain.usecase.interfaces.IGetDrugListUseCase
 import com.test.sber.presentation.vm.base.BaseVm
+import io.reactivex.Single
 import io.reactivex.rxkotlin.addTo
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
-class MainFragmentVm @Inject constructor(private val iGetDrugListUseCase: IGetDrugListUseCase) : BaseVm() {
+class MainFragmentVm @Inject constructor(
+    private val iGetDrugListUseCase: IGetDrugListUseCase,
+    private val iCheckConnectionUseCase: ICheckConnectionUseCase
+) : BaseVm() {
     val drugListState
             = BehaviorRelay.createDefault<Pair<List<Entity.Drug>, List<Entity.Drug>>>(
         Pair(
@@ -24,10 +28,10 @@ class MainFragmentVm @Inject constructor(private val iGetDrugListUseCase: IGetDr
             = BehaviorRelay.createDefault<Boolean>(false)
     val internetErrorState
             = PublishRelay.create<Unit>()
+    val connectionState = BehaviorRelay.createDefault<Boolean>(true)
 
 
     fun init() {
-//        CustomApp.appComponent.injectViewModel(this)
         loadContent()
     }
 
@@ -35,10 +39,20 @@ class MainFragmentVm @Inject constructor(private val iGetDrugListUseCase: IGetDr
         iGetDrugListUseCase
             .getDrugs()
             .applyScheduler(Schedulers.io())
-            .doOnSubscribe { loadingState.accept(true) }
+            .doOnSubscribe {
+                Log.e("TAG", "loadContent: doOnSubsc" )
+                loadingState.accept(true) }
             .doAfterTerminate { loadingState.accept(false) }
             .subscribe(
-                { drugListState.accept(it) },
+                { drugList ->
+                      //чтобы лучше рассмотреть анимацию загрузки
+//                    Observable
+//                        .timer(3, TimeUnit.SECONDS)
+//                        .applyScheduler(Schedulers.io())
+//                        .subscribe {
+                            drugListState.accept(drugList)
+//                        }
+                },
                 { internetErrorState.accept(Unit) }
             )
             .addTo(binds)
@@ -48,5 +62,8 @@ class MainFragmentVm @Inject constructor(private val iGetDrugListUseCase: IGetDr
         binds.clear()
         super.onCleared()
     }
+
+    fun checkConnection() : Single<Boolean>
+       = iCheckConnectionUseCase.checkConnection()
 
 }
