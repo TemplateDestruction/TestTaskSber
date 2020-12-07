@@ -25,8 +25,8 @@ class MainFragmentVm @Inject constructor(
     )
     val loadingState = BehaviorRelay.createDefault<Boolean>(false)
     val internetErrorState = PublishRelay.create<Unit>()
-    val connectionState = BehaviorRelay.createDefault<Boolean>(true)
-
+    var adultShow = 0
+    var childShow = 0
 
     fun init() {
         loadContent()
@@ -59,5 +59,18 @@ class MainFragmentVm @Inject constructor(
     }
 
     fun checkConnection(): Single<Boolean> = iCheckConnectionUseCase.checkConnection()
+
+    fun listShowed(state: Int) {
+        when (state) {
+            0 -> {
+                adultShow++
+                // showed adultDrugList
+            }
+            1 -> {
+                childShow++
+                // showed childDrugList
+            }
+        }
+    }
 
 }

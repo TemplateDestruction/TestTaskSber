@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.FragmentActivity
+import androidx.fragment.app.FragmentStatePagerAdapter
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.viewpager.widget.PagerAdapter
@@ -74,8 +75,5 @@ class DrugsPagerAdapter @Inject constructor (
         bundle.putParcelable("drug", item)
         (mContext as MainActivity).navController.navigate(R.id.drugFragment, bundle)
     }
-
-
-
 
 }

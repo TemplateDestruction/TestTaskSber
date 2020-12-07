@@ -1,9 +1,11 @@
 package com.test.sber.presentation.view.main
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
+import androidx.viewpager.widget.ViewPager
 import com.jakewharton.rxbinding2.view.clicks
 import com.test.sber.R
 import com.test.sber.presentation.view.adapters.DrugsPagerAdapter
@@ -30,6 +32,10 @@ class MainFragment : BaseVmFragment<MainFragmentVm>(R.layout.main_frag) {
 
     }
 
+    override fun onResume() {
+        super.onResume()
+    }
+
     override fun init() {
         vm.init()
     }
@@ -37,6 +43,26 @@ class MainFragment : BaseVmFragment<MainFragmentVm>(R.layout.main_frag) {
     private fun setupTabs() {
         drugs_viewpager.adapter = drugsPagerAdapter
         tabs_drug_frag.setupWithViewPager(drugs_viewpager)
+
+        drugs_viewpager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
+            override fun onPageScrollStateChanged(state: Int) {
+            }
+
+            override fun onPageScrolled(
+                position: Int,
+                positionOffset: Float,
+                positionOffsetPixels: Int
+            ) {
+
+            }
+
+            override fun onPageSelected(position: Int) {
+                //  отслеживание для аналитиков
+                if (vm.drugListState.value?.first?.isNotEmpty()!!) {
+                    vm.listShowed(position)
+                }
+            }
+        })
     }
 
     override fun createBinds() {

@@ -3,9 +3,9 @@
 
     <style name="TabsStyle">
         <item name="android:background">@color/white</item>
-        <item name="tabTextColor">@color/blue</item>
-        <item name="tabSelectedTextColor">@color/blue</item>
-        <item name="tabIndicatorColor">@color/blue</item>
+        <item name="tabTextColor">@color/primary_text</item>
+        <item name="tabSelectedTextColor">@color/secondary_text</item>
+        <item name="tabIndicatorColor">@color/secondary_text</item>
     </style>
 
     <style name="LoadingBar" parent="Widget.AppCompat.ProgressBar">

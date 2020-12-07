@@ -30,7 +30,7 @@
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
         android:textSize="20sp"
-        android:textColor="@color/black"
+        android:textColor="@color/secondary_text"
         app:layout_constraintBottom_toBottomOf="@+id/image_drug_layout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/image_drug_layout"
