@@ -49,11 +49,5 @@ class EmptyRecyclerView : RecyclerView {
         }
         visibility = View.GONE
     }
-
-    fun configureRecycler() {
-        setHasFixedSize(true)
-        setItemViewCacheSize(20)
-        isDrawingCacheEnabled = true
-        drawingCacheQuality = View.DRAWING_CACHE_QUALITY_HIGH
-    }
+    
 }

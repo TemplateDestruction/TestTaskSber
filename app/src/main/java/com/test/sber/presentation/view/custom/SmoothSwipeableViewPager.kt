@@ -35,4 +35,5 @@ class SmoothSwipeableViewPager @JvmOverloads constructor(
             super.startScroll(startX, startY, dx, dy, 350 /*1 secs*/)
         }
     }
+
 }

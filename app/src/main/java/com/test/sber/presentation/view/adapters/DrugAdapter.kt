@@ -37,4 +37,6 @@ class DrugAdapter @Inject constructor() :
             text_drug_layout.text = drug.title
         }
     }
+
+
 }
