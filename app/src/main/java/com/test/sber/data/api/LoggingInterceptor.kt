@@ -7,6 +7,8 @@ import java.io.IOException
 
 class LoggingInterceptor private constructor() : Interceptor {
 
+
+
     @Throws(IOException::class)
     override fun intercept(chain: Interceptor.Chain): Response {
         return HttpLoggingInterceptor()

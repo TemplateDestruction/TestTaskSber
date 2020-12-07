@@ -27,7 +27,6 @@ class EmptyRecyclerView : RecyclerView {
             showRecycler()
         } else {
             showEmptyView()
-            Log.e("TAG", "checkIfEmpty: rofl" )
         }
     }
 
@@ -45,7 +44,6 @@ class EmptyRecyclerView : RecyclerView {
 
     @VisibleForTesting
     internal fun showEmptyView() {
-        Log.e("TAG", "showEmptyView: works")
         if (mEmptyView != null) {
             mEmptyView!!.visibility = View.VISIBLE
         }

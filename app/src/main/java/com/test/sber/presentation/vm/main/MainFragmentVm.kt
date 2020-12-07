@@ -17,17 +17,14 @@ class MainFragmentVm @Inject constructor(
     private val iGetDrugListUseCase: IGetDrugListUseCase,
     private val iCheckConnectionUseCase: ICheckConnectionUseCase
 ) : BaseVm() {
-    val drugListState
-            = BehaviorRelay.createDefault<Pair<List<Entity.Drug>, List<Entity.Drug>>>(
+    val drugListState = BehaviorRelay.createDefault<Pair<List<Entity.Drug>, List<Entity.Drug>>>(
         Pair(
             emptyList(),
             emptyList()
         )
     )
-    val loadingState
-            = BehaviorRelay.createDefault<Boolean>(false)
-    val internetErrorState
-            = PublishRelay.create<Unit>()
+    val loadingState = BehaviorRelay.createDefault<Boolean>(false)
+    val internetErrorState = PublishRelay.create<Unit>()
     val connectionState = BehaviorRelay.createDefault<Boolean>(true)
 
 
@@ -39,18 +36,16 @@ class MainFragmentVm @Inject constructor(
         iGetDrugListUseCase
             .getDrugs()
             .applyScheduler(Schedulers.io())
-            .doOnSubscribe {
-                Log.e("TAG", "loadContent: doOnSubsc" )
-                loadingState.accept(true) }
+            .doOnSubscribe { loadingState.accept(true) }
             .doAfterTerminate { loadingState.accept(false) }
             .subscribe(
                 { drugList ->
-                      //чтобы лучше рассмотреть анимацию загрузки
+                    //чтобы лучше рассмотреть анимацию загрузки
 //                    Observable
 //                        .timer(3, TimeUnit.SECONDS)
 //                        .applyScheduler(Schedulers.io())
 //                        .subscribe {
-                            drugListState.accept(drugList)
+                    drugListState.accept(drugList)
 //                        }
                 },
                 { internetErrorState.accept(Unit) }
@@ -63,7 +58,6 @@ class MainFragmentVm @Inject constructor(
         super.onCleared()
     }
 
-    fun checkConnection() : Single<Boolean>
-       = iCheckConnectionUseCase.checkConnection()
+    fun checkConnection(): Single<Boolean> = iCheckConnectionUseCase.checkConnection()
 
 }

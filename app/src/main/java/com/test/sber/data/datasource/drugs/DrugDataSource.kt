@@ -9,7 +9,6 @@ import io.reactivex.Single
 class DrugDataSource(private val dataService: DataService): IDrugDataSource {
     override fun getRemoteData() : Single<Pair<List<Entity.Drug>, List<Entity.Drug>>> =
         Single.defer {
-            Log.e("TAG", "getRemoteData: start" )
             dataService.getDrugList()
                 .map { adultDrugListDto -> adultDrugListDto.map { DrugDto -> DrugDto.toEntity() } }
                 .map { adultDrugList ->
