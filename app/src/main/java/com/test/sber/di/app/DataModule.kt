@@ -46,6 +46,6 @@ class DataModule {
     @Provides
     @Singleton
     fun provideHttpLoggingInterceptor() : Interceptor {
-        return HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
+        return LoggingInterceptor.create()
     }
 }
